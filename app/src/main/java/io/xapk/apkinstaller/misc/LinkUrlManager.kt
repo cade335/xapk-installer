@@ -7,11 +7,14 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import io.reactivex.Observable
 import io.xapk.apkinstaller.R
 import io.xapk.apkinstaller.model.bean.ApiException
-import io.xapk.apkinstaller.utils.*
-import io.xapk.apkinstaller.utils.bean.xapk.XApkInfo
+import io.xapk.apkinstaller.utils.ColorUtils
+import io.xapk.apkinstaller.utils.IconicsUtils
+import io.xapk.apkinstaller.utils.StringUtils
+import io.xapk.apkinstaller.utils.ViewUtils
 import io.xapk.apkinstaller.utils.asset.AssetUtils
 import io.xapk.apkinstaller.utils.bean.ApkAssetType
 import io.xapk.apkinstaller.utils.bean.ApksInfo
+import io.xapk.apkinstaller.utils.bean.xapk.XApkInfo
 import io.xapk.apkinstaller.utils.io.FsUtils
 import io.xapk.apkinstaller.utils.io.UriUtils
 import io.xapk.apkinstaller.utils.rx.RxObservableTransformer
@@ -99,10 +102,7 @@ object LinkUrlManager {
                             , JodaTimeUtils.formatDataToShortDateInfo(JodaTimeUtils.longToDate(t.lastModified))))
                         this.title(null, t.fileName)
                         this@show.message(null, copyInfo)
-                        this.negativeButton(android.R.string.copy) {
-                            ClipboardUtil.getInstance(mContext).text = copyInfo
-                            SimpleToast.defaultShow(mContext, R.string.copy_successfully)
-                        }
+                        this.negativeButton(android.R.string.cancel)
                         this.positiveButton(R.string.install) {
                             ViewUtils.installApks(mContext, t)
                         }

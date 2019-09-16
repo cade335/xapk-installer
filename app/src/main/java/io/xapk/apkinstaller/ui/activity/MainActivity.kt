@@ -15,7 +15,6 @@ import io.xapk.apkinstaller.misc.ViewPagerTabAdapter
 import io.xapk.apkinstaller.model.bean.ApiException
 import io.xapk.apkinstaller.model.event.ApkExportCompleteEvent
 import io.xapk.apkinstaller.model.event.ApksExportCompleteEvent
-import io.xapk.apkinstaller.model.event.AppInstalledStatusEvent
 import io.xapk.apkinstaller.model.event.XApkExportCompleteEvent
 import io.xapk.apkinstaller.ui.base.BaseFragment
 import io.xapk.apkinstaller.ui.base.IBaseActivity

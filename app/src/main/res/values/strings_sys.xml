@@ -10,9 +10,8 @@
         <item>@string/open</item>
         <item>@string/attribute</item>
         <item>@string/application_info</item>
-        <item>@string/export_xapk</item>
         <item>@string/export_apk</item>
-        <item>@string/export_apks</item>
+        <item>@string/export_xapk</item>
     </string-array>
 
     <string-array name="install_package_options" translatable="false">

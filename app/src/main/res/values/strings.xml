@@ -2,7 +2,7 @@
     <string name="share">分享</string>
     <string name="installed">已安装</string>
     <string name="install">安装</string>
-    <string name="apk_xapk">Apk/XApk</string>
+    <string name="apk_xapk">APK/XAPK</string>
     <string name="xapk_tag">XAPK</string>
     <string name="apks_tag">APKS</string>
     <string name="un_installed">卸载</string>
@@ -11,9 +11,8 @@
     <string name="open">打开</string>
     <string name="attribute">属性</string>
     <string name="application_info">应用程序信息</string>
-    <string name="export_xapk">导出XApk</string>
-    <string name="export_apk">导出Apk</string>
-    <string name="export_apks">导出Apks</string>
+    <string name="export_xapk">导出XAPK</string>
+    <string name="export_apk">导出APK</string>
     <string name="copy_successfully">拷贝成功</string>
     <string name="delete">删除</string>
     <string name="empty_install_package">没有安装包!</string>
@@ -40,8 +39,8 @@
     <string name="install_failed">安装失败!</string>
     <string name="install_success">安装成功!</string>
 
-    <string name="install_obb_failed">Obb文件安装失败!</string>
-    <string name="xapk_file_error">XApk 安装包缺失!</string>
+    <string name="install_obb_failed">OBB文件安装失败!</string>
+    <string name="xapk_file_error">XAPK 安装包缺失!</string>
     <string name="share_text">XApk shareText</string>
     <string name="menu_app_info_hit">
         <![CDATA[版本:<xliff:g example="2.12.0" id="version">%1$s</xliff:g><br/>

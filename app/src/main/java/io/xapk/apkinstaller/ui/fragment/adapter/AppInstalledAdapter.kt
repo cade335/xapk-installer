@@ -74,17 +74,15 @@ class AppInstalledAdapter(val mActivity: Activity, data: List<AppInfo>?) : BaseQ
                         this.add(0, index, index, s)
                     }
             }
-            this.menu.findItem(3)?.isVisible = appInfo.isExpandXApk
-            this.menu.findItem(4)?.isVisible = appInfo.isUpdateFile
-            this.menu.findItem(5)?.isVisible = appInfo.isExpandApks
+            this.menu.findItem(3)?.isVisible = appInfo.isUpdateFile
+            this.menu.findItem(4)?.isVisible = appInfo.isExpandXApk
             this.setOnMenuItemClickListener {
                 when (it.itemId) {
                     0 -> IntentUtils.openApp(mContext, appInfo.packageName)
                     1 -> aboutAppInfo(appInfo)
                     2 -> IntentUtils.openAppSetting(mContext, appInfo.packageName)
-                    3 -> LaunchUtils.startXApkOutputZipService(mContext, appInfo)
-                    4 -> LaunchUtils.startApkExportService(mContext, appInfo)
-                    5 -> LaunchUtils.startApksExportService(mContext, appInfo)
+                    3 -> LaunchUtils.startApkExportService(mContext, appInfo)
+                    4 -> LaunchUtils.startXApkOutputZipService(mContext, appInfo)
                     else -> {
                     }
                 }

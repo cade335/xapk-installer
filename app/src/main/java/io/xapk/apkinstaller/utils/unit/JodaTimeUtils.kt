@@ -15,17 +15,6 @@ object JodaTimeUtils {
     private const val HOUR = (60 * 60).toLong()
     private const val MINUTE: Long = 60
 
-    fun getDifferenceTimeDescription(differenceTime: Long): String {
-        return when {
-            differenceTime > YEAR -> "${differenceTime / YEAR}年前"
-            differenceTime > MONTH -> "${differenceTime / MONTH}个月前"
-            differenceTime > DAY -> "${differenceTime / DAY}天前"
-            differenceTime > HOUR -> "${differenceTime / HOUR}小时前"
-            differenceTime > MINUTE -> "${differenceTime / MINUTE}分钟前"
-            else -> "刚刚"
-        }
-    }
-
     fun dateToString(data: Date, formatType: String): String {
         return DateTime(data).toString(formatType)
     }
