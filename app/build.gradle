@@ -1,0 +1,133 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply from: 'app_res_guard.gradle'
+apply from: 'app_signing_config.gradle'
+
+ext.abiCodes = ["armeabi-v7a": 1, "x86": 2]
+android {
+
+    compileSdkVersion = 28
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        applicationId "io.xapk.apkinstaller"
+        minSdkVersion rootProject.minSdkVersion as int
+        targetSdkVersion rootProject.targetSdkVersion as int
+        versionCode rootProject.versionCode as int
+        versionName rootProject.versionName
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+        resConfigs "zh-rCN", "en"
+    }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi-v7a", "x86"
+            universalApk true
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    flavorDimensions "default"
+    productFlavors {
+        "default" {}
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+    kotlinOptions {
+        suppressWarnings = true
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
+    configurations {
+        all {
+            exclude group: 'org.json', module: 'json'
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def time = new Date().format("yyyy-MM-dd HH-mm")
+            def flavorName = variant.productFlavors[0].name
+            def abiName
+            def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(com.android.build.OutputFile.ABI))
+            if (baseAbiVersionCode == 1) {
+                abiName = "armeabi-v7a"
+            } else if (baseAbiVersionCode == 2) {
+                abiName = "x86"
+            } else {
+                abiName = "universal"
+            }
+            outputFileName = "${rootProject.apkName}" +
+                    "_${variant.buildType.name}" +
+                    "_${flavorName}" +
+                    "_${abiName}" +
+                    "_v${defaultConfig.versionName}" +
+                    "_${defaultConfig.versionCode}" +
+                    "_${time}.apk"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
+    implementation 'androidx.preference:preference:1.1.0-rc01'
+    annotationProcessor 'androidx.annotation:annotation:1.1.0'
+    implementation 'com.google.android.material:material:1.0.0'
+
+    // rx
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
+    implementation "com.github.tbruyelle:rxpermissions:$rootProject.rxpermissionsVersion"
+    implementation "com.trello.rxlifecycle3:rxlifecycle-android:$rootProject.rxlifecycleVersion"
+    implementation "com.trello.rxlifecycle3:rxlifecycle-components:$rootProject.rxlifecycleVersion"
+    implementation "com.trello.rxlifecycle3:rxlifecycle-components-preference:$rootProject.rxlifecycleVersion"
+
+    //common
+    implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
+    annotationProcessor "org.greenrobot:eventbus-annotation-processor:$rootProject.eventBusVersion"
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$rootProject.glideVersion"
+    implementation "com.github.bumptech.glide:recyclerview-integration:$rootProject.glideVersion"
+    implementation 'jp.wasabeef:glide-transformations:4.0.0'
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    implementation "com.github.orhanobut:logger:$rootProject.loggerVersion"
+    implementation 'com.mikepenz:iconics-core:3.1.0@aar'
+    implementation 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar'
+    implementation "com.makeramen:roundedimageview:$rootProject.roundedImageViewVersion"
+    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$rootProject.baserecyclerviewadapterVersion"
+    implementation "com.afollestad.material-dialogs:core:$rootProject.materialDialogsVersion"
+    implementation "com.afollestad.material-dialogs:color:$rootProject.materialDialogsVersion"
+    implementation 'com.github.xiongke:loadinglayout:1.0.5'
+    implementation 'org.apache.commons:commons-compress:1.12'
+    implementation 'com.github.GrenderG:Toasty:1.3.1'
+    implementation 'joda-time:joda-time:2.10.2'
+
+    //tools
+    debugImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
+    betaImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
+}

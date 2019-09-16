@@ -1,0 +1,55 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorGreenPrimary</item>
+        <item name="colorPrimaryDark">@color/colorGreenPrimaryDark</item>
+        <item name="colorAccent">@color/colorGreenAccent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/bg_color</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="styleLoadingLayout">@style/LoadingLayoutStyle</item>
+    </style>
+
+    <style name="CustomAppBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="titleTextAppearance">@style/Toolbar_TextAppearance_White</item>
+    </style>
+
+    <style name="Toolbar_TextAppearance_White" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Custom.AppCompat.StateButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:minWidth">@dimen/size_58</item>
+        <item name="android:maxWidth">@dimen/size_58</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:minHeight">@dimen/size_0</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingTop">@dimen/size_6</item>
+        <item name="android:paddingBottom">@dimen/size_6</item>
+        <item name="android:paddingLeft">@dimen/size_4</item>
+        <item name="android:paddingRight">@dimen/size_4</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="LoadingLayoutStyle" parent="LoadingLayout.Style">
+        <item name="llEmptyImage">@drawable/empty</item>
+        <item name="llErrorImage">@drawable/error</item>
+        <item name="llLoadingResId">@layout/loading_layout_loading</item>
+        <item name="llEmptyResId">@layout/loading_layout_empty</item>
+        <item name="llErrorResId">@layout/loading_layout_error</item>
+        <item name="llEmptyText">@string/error_no_data</item>
+        <item name="llErrorText">@string/error_info</item>
+        <item name="llRetryText">@string/retry</item>
+        <item name="llTextColor">@color/text_minor_color</item>
+        <item name="llButtonTextColor">@color/text_minor_color</item>
+        <item name="llButtonTextSize">@dimen/font_14</item>
+        <item name="llTextSize">@dimen/size_14</item>
+        <item name="llLoadingVisibility">false</item>
+    </style>
+</resources>

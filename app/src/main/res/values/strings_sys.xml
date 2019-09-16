@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="xapk_install_name">XAPK Installer</string>
+    <string name="behavior_bottom_navigation" translatable="false">com.xk.gvido.app.ui.widget.behavior.BottomNavigationBehavior</string>
+    <string name="behavior_appbar_scrolling_view" translatable="false">@string/appbar_scrolling_view_behavior</string>
+    <string name="language_auto_value" translatable="false">-auto-</string>
+    <item name="glide_tag" type="id" />
+
+    <string-array name="installed_app_options" translatable="false">
+        <item>@string/open</item>
+        <item>@string/attribute</item>
+        <item>@string/application_info</item>
+        <item>@string/export_xapk</item>
+        <item>@string/export_apk</item>
+        <item>@string/export_apks</item>
+    </string-array>
+
+    <string-array name="install_package_options" translatable="false">
+        <item>@string/delete</item>
+        <item>@string/attribute</item>
+    </string-array>
+</resources>

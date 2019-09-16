@@ -1,0 +1,58 @@
+<resources>
+    <string name="share">分享</string>
+    <string name="installed">已安装</string>
+    <string name="install">安装</string>
+    <string name="apk_xapk">Apk/XApk</string>
+    <string name="xapk_tag">XAPK</string>
+    <string name="apks_tag">APKS</string>
+    <string name="un_installed">卸载</string>
+    <string name="error_unknown">未知错误!</string>
+    <string name="empty_applications">没有应用!</string>
+    <string name="open">打开</string>
+    <string name="attribute">属性</string>
+    <string name="application_info">应用程序信息</string>
+    <string name="export_xapk">导出XApk</string>
+    <string name="export_apk">导出Apk</string>
+    <string name="export_apks">导出Apks</string>
+    <string name="copy_successfully">拷贝成功</string>
+    <string name="delete">删除</string>
+    <string name="empty_install_package">没有安装包!</string>
+    <string name="q_loading">正在加载中&#8230;</string>
+    <string name="retry">重试</string>
+    <string name="error_info">发生错误了…</string>
+    <string name="error_no_data">没有数据!</string>
+    <string name="read_write_permission_prompt">为了保证正常使用,请开启读写权限!</string>
+    <string name="xapk_start_ing">XAPK 准备中&#8230;</string>
+    <string name="xapk_output_ing">XAPK 打包中&#8230;</string>
+    <string name="xapk_output_complete">XAPK 打包完成!</string>
+    <string name="xapk_output_failed">XAPK 打包失敗!</string>
+
+    <string name="apk_export_ing">APK 导出中&#8230;</string>
+    <string name="apk_export_complete">APK 导出完成!</string>
+    <string name="apk_export_failed">APK 导出失败!</string>
+    <string name="apks_export_ing">APKS 导出中&#8230;</string>
+    <string name="apks_export_complete">APKS 导出完成!</string>
+    <string name="apks_export_failed">APKS 导出失败!</string>
+    <string name="preparing">准备中&#8230;</string>
+    <string name="installing">正在安装&#8230;</string>
+    <string name="installing_obb_file">正在安装OBB文件&#8230;</string>
+    <string name="pick_up_apk_file">正在提取APK文件&#8230;</string>
+    <string name="install_failed">安装失败!</string>
+    <string name="install_success">安装成功!</string>
+
+    <string name="install_obb_failed">Obb文件安装失败!</string>
+    <string name="xapk_file_error">XApk 安装包缺失!</string>
+    <string name="share_text">XApk shareText</string>
+    <string name="menu_app_info_hit">
+        <![CDATA[版本:<xliff:g example="2.12.0" id="version">%1$s</xliff:g><br/>
+        包名:<xliff:g example="com.xk.qq" id="packName">%2$s</xliff:g><br/>
+        路径:<xliff:g example="a/b/c" id="path">%3$s</xliff:g><br/>
+        大小:<xliff:g example="200M" id="size">%4$s</xliff:g><br/>
+        最后修改时间:<xliff:g example="2019-8-9 10:10" id="lastDate">%5$s</xliff:g>]]>
+    </string>
+    <string name="menu_apks_info_hit">
+        <![CDATA[路径:<xliff:g example="a/b/c" id="path">%1$s</xliff:g><br/>
+        大小:<xliff:g example="200M" id="size">%2$s</xliff:g><br/>
+        最后修改时间:<xliff:g example="2019-8-9 10:10" id="lastDate">%3$s</xliff:g>]]>
+    </string>
+</resources>

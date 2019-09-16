@@ -1,0 +1,56 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        beta {
+            storePassword "123456"
+            keyAlias "qwer"
+            keyPassword "123456"
+            storeFile rootProject.file('store_file/xapk_install_beta.jks')
+            v2SigningEnabled false
+        }
+
+        release {
+            storePassword System.getenv("STORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
+            storeFile rootProject.file('store_file/xapkinstall_replase.jks')
+            v2SigningEnabled false
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            versionNameSuffix "-debug"
+            applicationIdSuffix ".debug"
+            buildConfigField "boolean", "IS_BETA", "false"
+            buildConfigField "boolean", "IS_RELEASE", "false"
+        }
+
+        beta {
+            versionNameSuffix "-beta"
+            applicationIdSuffix ".beta"
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.beta
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "IS_BETA", "true"
+            buildConfigField "boolean", "IS_RELEASE", "false"
+        }
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "IS_BETA", "false"
+            buildConfigField "boolean", "IS_RELEASE", "true"
+        }
+    }
+}
+
+
+

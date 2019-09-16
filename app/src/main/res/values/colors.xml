@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--green-->
+    <color name="colorGreenPrimary">#4CAF50</color>
+    <color name="colorGreenAccent">#4CAF50</color>
+    <color name="colorGreenPrimaryDark">#388E3C</color>
+
+    <color name="bg_color">@color/white</color>
+    <color name="bg_color_prep">@color/material_grey_200</color>
+    <color name="line_small_color">#D7D7D7</color>
+    <color name="line_big_color">@color/material_grey_200</color>
+    <color name="black">@android:color/black</color>
+    <color name="white">@android:color/white</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="transparent_20">#20000000</color>
+    <color name="transparent_30">#30000000</color>
+    <color name="black_80">#80000000</color>
+    <color name="black_60">#60000000</color>
+    <color name="black_20">#20000000</color>
+    <color name="white_translucent_20">#20FFFFFF</color>
+    <color name="white_translucent_30">#30FFFFFF</color>
+    <color name="white_translucent_40">#40FFFFFF</color>
+    <color name="white_translucent_50">#50FFFFFF</color>
+    <color name="white_translucent_60">#60FFFFFF</color>
+    <color name="white_translucent_70">#70FFFFFF</color>
+    <color name="white_translucent_80">#80FFFFFF</color>
+    <color name="ic_launcher_background">#62C97F</color>
+
+    <color name="text_color">@color/material_grey_900</color>
+    <color name="text_minor_color">@color/material_grey_600</color>
+    <color name="placeholder_color">#ebebeb</color>
+</resources>
