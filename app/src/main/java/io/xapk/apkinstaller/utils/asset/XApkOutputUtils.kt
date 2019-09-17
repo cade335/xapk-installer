@@ -5,18 +5,20 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
-import io.xapk.apkinstaller.utils.bean.apk.AppInfo
 import io.xapk.apkinstaller.model.bean.AppedIconUrl
-import io.xapk.apkinstaller.utils.bean.xapk.XApkExpansion
-import io.xapk.apkinstaller.utils.bean.xapk.XApkManifest
 import io.xapk.apkinstaller.utils.AppLogger
 import io.xapk.apkinstaller.utils.JsonUtils
+import io.xapk.apkinstaller.utils.bean.apk.AppInfo
+import io.xapk.apkinstaller.utils.bean.xapk.XApkExpansion
+import io.xapk.apkinstaller.utils.bean.xapk.XApkManifest
+import io.xapk.apkinstaller.utils.bean.xapk.XSplitApks
 import io.xapk.apkinstaller.utils.imager.ImageUtils
 import io.xapk.apkinstaller.utils.io.AppFolder
 import io.xapk.apkinstaller.utils.io.FileWriterUtils
 import io.xapk.apkinstaller.utils.io.FsUtils
 import io.xapk.apkinstaller.utils.io.ZipUtils
 import java.io.File
+
 
 object XApkOutputUtils {
     private val TAG by lazy { javaClass.simpleName }
@@ -61,49 +63,70 @@ object XApkOutputUtils {
             }
             return
         }
-        handler.post {
-            xApkOutputProgressCallback?.onProgress(XApkOutputStatus.ApkPrePare)
-        }
-        val apkFile = File(appInfo.sourceDir)
-        val outputApkFile = File(packageOutPutFileDir, "${appInfo.packageName}.apk")
-        FsUtils.writeFileToFile(outputApkFile, apkFile)
-        if (!FsUtils.exists(outputApkFile) || FsUtils.getFileOrDirLength(outputApkFile) == 0L) {
+        val xSplitApksList = arrayListOf<XSplitApks>()
+        if (appInfo.isUpdateFile && appInfo.obbExists) {
             handler.post {
-                xApkOutputProgressCallback?.onError(packageOutPutFileDir)
+                xApkOutputProgressCallback?.onProgress(XApkOutputStatus.ApkPrePare)
             }
-            return
+            val apkFile = File(appInfo.sourceDir)
+            val outputApkFile = File(packageOutPutFileDir, "${appInfo.packageName}.apk")
+            FsUtils.writeFileToFile(outputApkFile, apkFile)
+            if (!FsUtils.exists(outputApkFile) || FsUtils.getFileOrDirLength(outputApkFile) == 0L) {
+                handler.post {
+                    xApkOutputProgressCallback?.onError(packageOutPutFileDir)
+                }
+                return
+            }
+        } else if (appInfo.apksFilePath.isNotEmpty()) {
+            handler.post {
+                xApkOutputProgressCallback?.onProgress(XApkOutputStatus.ApkPrePare)
+            }
+            appInfo.apksFilePath.forEach {
+                val apkFile = File(it)
+                xSplitApksList.add(XSplitApks(apkFile.name))
+                val outputApkFile = File(packageOutPutFileDir, apkFile.name)
+                FsUtils.writeFileToFile(outputApkFile, apkFile)
+                if (!FsUtils.exists(outputApkFile) || FsUtils.getFileOrDirLength(outputApkFile) == 0L) {
+                    handler.post {
+                        xApkOutputProgressCallback?.onError(packageOutPutFileDir)
+                    }
+                    return
+                }
+            }
         }
-        handler.post {
-            xApkOutputProgressCallback?.onProgress(XApkOutputStatus.ObbPrePare)
-        }
-        val obbOutputFileDir = File(packageOutPutFileDir, "Android/obb/${appInfo.packageName}")
-        FsUtils.createOnNotFound(obbOutputFileDir)
-        val mainObbFile = File(appInfo.xApkMainObbAbsolutePath)
-        val patchObbFile = File(appInfo.xApkPatchObbAbsolutePath)
         val xApkExpansionList = arrayListOf<XApkExpansion>()
-        if (FsUtils.exists(mainObbFile)) {
-            FsUtils.copyFileOrDirToDir(obbOutputFileDir, mainObbFile)
-            xApkExpansionList.add(XApkExpansion().apply {
-                val tempPath = "Android/obb/${appInfo.packageName}/${mainObbFile.name}"
-                this.xFile = tempPath
-                this.installPath = tempPath
-                this.installLocation = "EXTERNAL_STORAGE"
-            })
-        }
-        if (FsUtils.exists(patchObbFile)) {
-            FsUtils.copyFileOrDirToDir(obbOutputFileDir, patchObbFile)
-            xApkExpansionList.add(XApkExpansion().apply {
-                val tempPath = "Android/obb/${appInfo.packageName}/${patchObbFile.name}"
-                this.xFile = tempPath
-                this.installPath = tempPath
-                this.installLocation = "EXTERNAL_STORAGE"
-            })
-        }
-        if (FsUtils.getFileOrDirLength(obbOutputFileDir) == 0L) {
+        if (appInfo.obbExists){
             handler.post {
-                xApkOutputProgressCallback?.onError(packageOutPutFileDir)
+                xApkOutputProgressCallback?.onProgress(XApkOutputStatus.ObbPrePare)
             }
-            return
+            val obbOutputFileDir = File(packageOutPutFileDir, "Android/obb/${appInfo.packageName}")
+            FsUtils.createOnNotFound(obbOutputFileDir)
+            val mainObbFile = File(appInfo.xApkMainObbAbsolutePath)
+            val patchObbFile = File(appInfo.xApkPatchObbAbsolutePath)
+            if (FsUtils.exists(mainObbFile)) {
+                FsUtils.copyFileOrDirToDir(obbOutputFileDir, mainObbFile)
+                xApkExpansionList.add(XApkExpansion().apply {
+                    val tempPath = "Android/obb/${appInfo.packageName}/${mainObbFile.name}"
+                    this.xFile = tempPath
+                    this.installPath = tempPath
+                    this.installLocation = "EXTERNAL_STORAGE"
+                })
+            }
+            if (FsUtils.exists(patchObbFile)) {
+                FsUtils.copyFileOrDirToDir(obbOutputFileDir, patchObbFile)
+                xApkExpansionList.add(XApkExpansion().apply {
+                    val tempPath = "Android/obb/${appInfo.packageName}/${patchObbFile.name}"
+                    this.xFile = tempPath
+                    this.installPath = tempPath
+                    this.installLocation = "EXTERNAL_STORAGE"
+                })
+            }
+            if (FsUtils.getFileOrDirLength(obbOutputFileDir) == 0L) {
+                handler.post {
+                    xApkOutputProgressCallback?.onError(packageOutPutFileDir)
+                }
+                return
+            }
         }
         handler.post {
             xApkOutputProgressCallback?.onProgress(XApkOutputStatus.OtherPrePare)
@@ -119,6 +142,7 @@ object XApkOutputUtils {
             this.permissions = appInfo.permissionsArrays
             this.totalSize = appInfo.appTotalSize
             this.expansionList = xApkExpansionList
+            this.XSplitApks = xSplitApksList
         }
         val jsonFile = File(packageOutPutFileDir, "manifest.json")
         FileWriterUtils.writeStringToFile(jsonFile, JsonUtils.objectToJson(xApkManifest))

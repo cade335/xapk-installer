@@ -19,7 +19,7 @@ data class AppInfo(var label: String,
                    var splitSourceDirs: ArrayList<String>,
                    var isUpdateFile: Boolean,
                    var isExpandXApk: Boolean,
-                   var isExpandApks:Boolean,
+                   var isExpandApks: Boolean,
                    var xApkMainObbPath: String,
                    var xApkMainObbAbsolutePath: String,
                    var xApkPatchObbPath: String,
@@ -27,7 +27,8 @@ data class AppInfo(var label: String,
                    var xApkObbSize: Long,
                    var appTotalSize: Long,
                    var permissionsArrays: ArrayList<String>,
-                   var apksFilePath:ArrayList<String>) : Parcelable {
+                   var apksFilePath: ArrayList<String>,
+                   var obbExists: Boolean) : Parcelable {
     constructor() : this(String(), String()
             , 0, String()
             , String(), String()
@@ -39,12 +40,13 @@ data class AppInfo(var label: String,
             , String(), String()
             , String(), 0L
             , 0L, arrayListOf()
-            , arrayListOf())
+            , arrayListOf(), false)
 
     override fun toString(): String {
         return "label=$label packageName=$packageName versionCode=$versionCode " +
                 "apkSize=$apkSize xApkObbSize=$xApkObbSize appTotalSize=$appTotalSize isUpdateFile=$isUpdateFile " +
                 "isEnabled=$isEnabled isExpandXApk=$isExpandXApk sourceDir=$sourceDir " +
-                "xApkMainObbPath=$xApkMainObbPath xApkPatchObbPath=$xApkPatchObbPath "
+                "xApkMainObbPath=$xApkMainObbPath xApkPatchObbPath=$xApkPatchObbPath "+
+                "obbExists=$obbExists "
     }
 }

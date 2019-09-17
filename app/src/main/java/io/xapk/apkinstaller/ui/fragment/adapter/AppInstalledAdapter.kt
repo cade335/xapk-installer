@@ -51,7 +51,7 @@ class AppInstalledAdapter(val mActivity: Activity, data: List<AppInfo>?) : BaseQ
             sizeTv.text = FormatUtils.formatFileLength(dateItem.appTotalSize)
             versionInfoTv.text = dateItem.versionName
             xApkRtv.apply {
-                if (dateItem.isExpandXApk) {
+                if (dateItem.obbExists) {
                     this.visibility = View.VISIBLE
                 } else {
                     this.visibility = View.GONE

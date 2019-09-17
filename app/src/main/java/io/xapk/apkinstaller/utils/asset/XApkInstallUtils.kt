@@ -253,7 +253,7 @@ object XApkInstallUtils {
         return if (xApkManifest.useSplitApks()) {
             var totalLength = 0L
             xApkManifest.XSplitApks?.forEach {
-                totalLength += zipFile.getEntry(it.file).compressedSize
+                totalLength += zipFile.getEntry(it.file)?.compressedSize?:0L
             }
             totalLength
         } else {
@@ -266,7 +266,7 @@ object XApkInstallUtils {
         return if (xApkManifest.useObbs()) {
             var totalLength = 0L
             for (item in xApkManifest.expansionList!!) {
-                totalLength += zipFile.getEntry(item.xFile).size
+                totalLength += zipFile.getEntry(item.xFile)?.size?:0L
             }
             totalLength
         } else {
