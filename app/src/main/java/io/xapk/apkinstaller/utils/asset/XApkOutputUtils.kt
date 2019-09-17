@@ -155,7 +155,7 @@ object XApkOutputUtils {
         handler.post {
             xApkOutputProgressCallback?.onProgress(XApkOutputStatus.ZipIng)
         }
-        val xApkOutputFile = File(AppFolder.xApkFolder, "${appInfo.packageName}.${appInfo.versionCode}.xapk")
+        val xApkOutputFile = File(AppFolder.xApkFolder, "${appInfo.packageName}.${appInfo.versionCode}.${appInfo.apksFilePath.size}.xapk")
         ZipUtils.composeFileOrDir(xApkOutputFile, packageOutPutFileDir)
         if (!FsUtils.exists(xApkOutputFile) || FsUtils.getFileOrDirLength(xApkOutputFile) == 0L) {
             handler.post {
