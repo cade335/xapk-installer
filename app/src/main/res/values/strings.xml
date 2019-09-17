@@ -54,4 +54,8 @@
         大小:<xliff:g example="200M" id="size">%2$s</xliff:g><br/>
         最后修改时间:<xliff:g example="2019-8-9 10:10" id="lastDate">%3$s</xliff:g>]]>
     </string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="development_code">开发源码许可</string>
+    <string name="about">关于</string>
+    <string name="refresh_page">刷新网页</string>
 </resources>

@@ -12,15 +12,29 @@
         <item name="android:windowBackground">@color/bg_color</item>
         <item name="android:textAllCaps">false</item>
         <item name="styleLoadingLayout">@style/LoadingLayoutStyle</item>
+        <item name="toolbarStyle">@style/CustomToolbarStyle</item>
+    </style>
+
+
+    <style name="Toolbar_TextAppearance_White" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="CustomAppBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="titleTextAppearance">@style/Toolbar_TextAppearance_White</item>
     </style>
 
-    <style name="Toolbar_TextAppearance_White" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@android:color/white</item>
+    <style name="CustomToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="popupTheme">@style/CustomPopupTheme</item>
+    </style>
+
+    <style name="CustomPopupTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+    </style>
+
+    <style name="OverflowMenuStyle" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
     </style>
 
     <style name="Custom.AppCompat.StateButton" parent="Base.Widget.AppCompat.Button">

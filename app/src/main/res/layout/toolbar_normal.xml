@@ -4,12 +4,12 @@
     android:id="@+id/appbar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:elevation="@dimen/size_4">
+    app:elevation="@dimen/size_4"
+    app:theme="@style/CustomAppBarTheme" >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_scrollFlags="enterAlways|snap|scroll"
-        app:theme="@style/CustomAppBarTheme" />
+        app:layout_scrollFlags="enterAlways|snap|scroll" />
 </com.google.android.material.appbar.AppBarLayout>

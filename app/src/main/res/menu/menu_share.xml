@@ -5,5 +5,20 @@
         android:id="@+id/action_share"
         android:orderInCategory="1"
         android:title="@string/share"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_privacy_policy"
+        android:orderInCategory="2"
+        android:title="@string/privacy_policy"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_development_code"
+        android:orderInCategory="3"
+        android:title="@string/development_code"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="4"
+        android:title="@string/about"
+        app:showAsAction="never" />
 </menu>
