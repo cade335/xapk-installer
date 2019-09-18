@@ -87,19 +87,23 @@ object AppUtils {
             } else {
                 true
             }
-            val isUpdateFile1 = updateFlag && !isApkInDebug(applicationInfo)
-            this.isUpdateFile = isUpdateFile1
+            val isUpdateApkFile1 = updateFlag && !isApkInDebug(applicationInfo)
+            this.isUpdateFile = isUpdateApkFile1
             this.apkSize = getAppInfoSourceDirLength(this)
+            val apksFilePath1 = arrayListOf<String>()
             if (applicationInfo.publicSourceDir != null) {
-                this.apksFilePath.add(applicationInfo.publicSourceDir)
+                apksFilePath1.add(applicationInfo.publicSourceDir)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     applicationInfo.splitPublicSourceDirs?.forEach {
-                        this.apksFilePath.add(it)
+                        apksFilePath1.add(it)
                     }
                 }
                 this.isExpandApks = true
             }
+            this.apksFilePath = apksFilePath1
+
             val storageDirPath = FsUtils.getStorageDir()?.absolutePath
+            var obbExists1 = false
             if (!TextUtils.isEmpty(packageName1) && !TextUtils.isEmpty(storageDirPath)) {
                 val mainObbFileName = "main.${packageInfo.versionCode}.$packageName1.obb"
                 val xApkMainPath1 = "Android${File.separator}obb${File.separator}$packageName1" +
@@ -111,8 +115,8 @@ object AppUtils {
                 val xApkPatchAbsolutePath1 = "$storageDirPath${File.separator}$xApkPatchPath1"
                 val obbSize = FsUtils.getFileOrDirLength(xApkMainAbsolutePath1) + FsUtils.getFileOrDirLength(xApkPatchAbsolutePath1)
 
-                this.isExpandXApk = isUpdateFile1 && obbSize > 0L
-                if (this.isExpandXApk) {
+                if (obbSize > 0L) {
+                    obbExists1 = true
                     this.xApkMainObbPath = xApkMainPath1
                     this.xApkMainObbAbsolutePath = xApkMainAbsolutePath1
                     this.xApkPatchObbPath = xApkPatchPath1
@@ -120,6 +124,8 @@ object AppUtils {
                     this.xApkObbSize = obbSize
                 }
             }
+            this.obbExists = obbExists1
+            this.isExpandXApk = obbExists1 && isUpdateApkFile1 || apksFilePath1.isNotEmpty()
             this.appTotalSize = this.apkSize + this.xApkObbSize
             packageInfo.requestedPermissions?.forEach {
                 this.permissionsArrays.add(it)

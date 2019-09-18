@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
-import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.tbruyelle.rxpermissions2.Permission
 import io.reactivex.disposables.Disposable
 import io.xapk.apkinstaller.R
@@ -15,14 +14,13 @@ import io.xapk.apkinstaller.misc.ViewPagerTabAdapter
 import io.xapk.apkinstaller.model.bean.ApiException
 import io.xapk.apkinstaller.model.event.ApkExportCompleteEvent
 import io.xapk.apkinstaller.model.event.ApksExportCompleteEvent
-import io.xapk.apkinstaller.model.event.AppInstalledStatusEvent
 import io.xapk.apkinstaller.model.event.XApkExportCompleteEvent
 import io.xapk.apkinstaller.ui.base.BaseFragment
 import io.xapk.apkinstaller.ui.base.IBaseActivity
 import io.xapk.apkinstaller.ui.fragment.AppInstalledFragment
 import io.xapk.apkinstaller.ui.fragment.InstallPackageFragment
-import io.xapk.apkinstaller.utils.IconicsUtils
 import io.xapk.apkinstaller.utils.IntentUtils
+import io.xapk.apkinstaller.utils.LaunchUtils
 import io.xapk.apkinstaller.utils.rx.RxPermissionsUtils
 import io.xapk.apkinstaller.utils.rx.RxSubscriber
 import io.xapk.apkinstaller.utils.toast.Duration
@@ -30,12 +28,15 @@ import io.xapk.apkinstaller.utils.toast.SimpleToast
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class MainActivity : IBaseActivity() {
+class MainActivity : IBaseActivity(), Toolbar.OnMenuItemClickListener {
     private lateinit var appbarLayout: AppBarLayout
     private lateinit var toolBar: Toolbar
     private lateinit var tabLayout: TabLayout
     private lateinit var mainVp: ViewPager
     private lateinit var mShareMenuItem: MenuItem
+    private lateinit var mDevelopmentCodeMenuItem: MenuItem
+    private lateinit var mPrivacyPolicyMenuItem: MenuItem
+    private lateinit var mAboutMenuItem: MenuItem
     private var isWithPermission = false
 
     override fun getLayout(): Int {
@@ -58,7 +59,11 @@ class MainActivity : IBaseActivity() {
         toolBar.apply {
             this.setTitle(R.string.xapk_install_name)
             this.inflateMenu(R.menu.menu_share)
+            this.setOnMenuItemClickListener(this@MainActivity)
             mShareMenuItem = this.menu.findItem(R.id.action_share)
+            mPrivacyPolicyMenuItem = this.menu.findItem(R.id.action_privacy_policy)
+            mDevelopmentCodeMenuItem = this.menu.findItem(R.id.action_development_code)
+            mAboutMenuItem = this.menu.findItem(R.id.action_about)
         }
         tabLayout.apply {
             this.tabGravity = TabLayout.GRAVITY_FILL
@@ -82,14 +87,6 @@ class MainActivity : IBaseActivity() {
             this.adapter = pagerAdapter
             this.currentItem = 0
         }
-        mShareMenuItem.apply {
-            this.icon =
-                IconicsUtils.getActionBarIcon(mContext, GoogleMaterial.Icon.gmd_share)
-            this.setOnMenuItemClickListener {
-                IntentUtils.shareText(mActivity, mContext.getString(R.string.share_text))
-                return@setOnMenuItemClickListener false
-            }
-        }
         requestPermission()
     }
 
@@ -98,6 +95,24 @@ class MainActivity : IBaseActivity() {
         intent?.data?.apply {
             LinkUrlManager.jumpToPage(mContext, this)
         }
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item) {
+            mShareMenuItem -> {
+                IntentUtils.shareText(mActivity, mContext.getString(R.string.share_text))
+            }
+            mPrivacyPolicyMenuItem -> {
+                LaunchUtils.startPrivacyPolicyActivity(mContext)
+            }
+            mDevelopmentCodeMenuItem -> {
+                LaunchUtils.startDevelopmentCodeActivity(mContext)
+            }
+            mAboutMenuItem -> {
+                LaunchUtils.startAboutActivity(mContext)
+            }
+        }
+        return false
     }
 
     private fun requestPermission() {

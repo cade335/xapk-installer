@@ -211,8 +211,8 @@ object XApkInstallUtils {
             var currentTotal = 0L
             xApkManifest.XSplitApks?.forEach {
                var singFileOffset = 0L
-               getZipFileInputStream(zipFile, it.file!!)?.apply {
-                   val tempApk = File(AppFolder.getXApkInstallTempFolder(xApkManifest.packageName), it.file!!)
+               getZipFileInputStream(zipFile, it.fileName!!)?.apply {
+                   val tempApk = File(AppFolder.getXApkInstallTempFolder(xApkManifest.packageName), it.fileName!!)
                    val isApkSuccess = FileWriterUtils.writeFileFromIS(tempApk, this, object : FileWriterUtils.FileWriterProgressCallback {
                        override fun onProgress(currentOffset: Long) {
                            val updateOffset = currentOffset - singFileOffset
@@ -253,7 +253,7 @@ object XApkInstallUtils {
         return if (xApkManifest.useSplitApks()) {
             var totalLength = 0L
             xApkManifest.XSplitApks?.forEach {
-                totalLength += zipFile.getEntry(it.file).compressedSize
+                totalLength += zipFile.getEntry(it.fileName)?.compressedSize ?: 0L
             }
             totalLength
         } else {
@@ -266,7 +266,7 @@ object XApkInstallUtils {
         return if (xApkManifest.useObbs()) {
             var totalLength = 0L
             for (item in xApkManifest.expansionList!!) {
-                totalLength += zipFile.getEntry(item.xFile).size
+                totalLength += zipFile.getEntry(item.xFile)?.size ?: 0L
             }
             totalLength
         } else {
