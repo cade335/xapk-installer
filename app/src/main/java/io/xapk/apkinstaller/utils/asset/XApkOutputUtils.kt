@@ -83,14 +83,21 @@ object XApkOutputUtils {
             }
             appInfo.apksFilePath.forEach {
                 val apkFile = File(it)
-                xSplitApksList.add(XSplitApks(apkFile.name))
-                val outputApkFile = File(packageOutPutFileDir, apkFile.name)
-                FsUtils.writeFileToFile(outputApkFile, apkFile)
-                if (!FsUtils.exists(outputApkFile) || FsUtils.getFileOrDirLength(outputApkFile) == 0L) {
-                    handler.post {
-                        xApkOutputProgressCallback?.onError(packageOutPutFileDir)
+                val fileName = apkFile.name
+                if (fileName.endsWith(".apk")) {
+                    var id = fileName.substring(0, fileName.indexOf(".apk"))
+                    if (id.startsWith("split_")) {
+                        id = id.substring("split_".length, id.length)
                     }
-                    return
+                    xSplitApksList.add(XSplitApks(fileName, id))
+                    val outputApkFile = File(packageOutPutFileDir, fileName)
+                    FsUtils.writeFileToFile(outputApkFile, apkFile)
+                    if (!FsUtils.exists(outputApkFile) || FsUtils.getFileOrDirLength(outputApkFile) == 0L) {
+                        handler.post {
+                            xApkOutputProgressCallback?.onError(packageOutPutFileDir)
+                        }
+                        return
+                    }
                 }
             }
         }
@@ -132,7 +139,7 @@ object XApkOutputUtils {
             xApkOutputProgressCallback?.onProgress(XApkOutputStatus.OtherPrePare)
         }
         val xApkManifest = XApkManifest().apply {
-            this.xApkVersion = 1
+            this.xApkVersion = 2
             this.packageName = appInfo.packageName
             this.label = appInfo.label
             this.versionCode = appInfo.versionCode.toString()
@@ -155,7 +162,7 @@ object XApkOutputUtils {
         handler.post {
             xApkOutputProgressCallback?.onProgress(XApkOutputStatus.ZipIng)
         }
-        val xApkOutputFile = File(AppFolder.xApkFolder, "${appInfo.packageName}.${appInfo.versionCode}.${appInfo.apksFilePath.size}.xapk")
+        val xApkOutputFile = File(AppFolder.xApkFolder, "${appInfo.packageName}.${appInfo.versionCode}.${xSplitApksList.size}.xapk")
         ZipUtils.composeFileOrDir(xApkOutputFile, packageOutPutFileDir)
         if (!FsUtils.exists(xApkOutputFile) || FsUtils.getFileOrDirLength(xApkOutputFile) == 0L) {
             handler.post {

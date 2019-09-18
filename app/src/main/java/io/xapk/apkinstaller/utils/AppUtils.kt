@@ -101,6 +101,7 @@ object AppUtils {
                 this.isExpandApks = true
             }
             this.apksFilePath = apksFilePath1
+
             val storageDirPath = FsUtils.getStorageDir()?.absolutePath
             var obbExists1 = false
             if (!TextUtils.isEmpty(packageName1) && !TextUtils.isEmpty(storageDirPath)) {
