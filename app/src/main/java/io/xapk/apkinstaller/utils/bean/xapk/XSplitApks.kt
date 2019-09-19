@@ -6,8 +6,8 @@ import com.google.gson.annotations.SerializedName
 data class XSplitApks(
         @Expose
         @SerializedName("file")
-        var fileName: String? = null,
+        var fileName: String,
         @Expose
         @SerializedName("id")
-        var _id: String? = null
+        var _id: String
 )

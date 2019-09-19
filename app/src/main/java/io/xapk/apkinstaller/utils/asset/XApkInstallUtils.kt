@@ -4,9 +4,10 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
+import io.xapk.apkinstaller.app.Config
+import io.xapk.apkinstaller.utils.JsonUtils
 import io.xapk.apkinstaller.utils.bean.xapk.ApksBean
 import io.xapk.apkinstaller.utils.bean.xapk.XApkManifest
-import io.xapk.apkinstaller.utils.JsonUtils
 import io.xapk.apkinstaller.utils.io.AppFolder
 import io.xapk.apkinstaller.utils.io.FileWriterUtils
 import io.xapk.apkinstaller.utils.io.FsUtils
@@ -23,6 +24,7 @@ object XApkInstallUtils {
         SplitApksError,
         ObbError,
         ApkError,
+        LowerVersionError,
     }
 
     interface XApkInstallProgressCallback {
@@ -115,6 +117,12 @@ object XApkInstallUtils {
                 parseXApkZipFile(xApkFile)?.apply {
                     zipFile = this
                     getXApkManifest(this)?.apply {
+                        if (this.xApkVersion < Config.XAPK_VERSION) {
+                            handler.post {
+                                xApkInstallProgressCallback?.onError(InstallError.LowerVersionError)
+                            }
+                            return@Runnable
+                        }
                         if (this.useObbs()) {
                             installXApkObb(zipFile!!, this, xApkInstallProgressCallback)
                         }
@@ -123,7 +131,6 @@ object XApkInstallUtils {
                         } else {
                             installApk(zipFile!!, this, xApkInstallProgressCallback)
                         }
-
                     }
                 }
             } catch (e: Exception) {
@@ -211,8 +218,8 @@ object XApkInstallUtils {
             var currentTotal = 0L
             xApkManifest.XSplitApks?.forEach {
                var singFileOffset = 0L
-               getZipFileInputStream(zipFile, it.fileName!!)?.apply {
-                   val tempApk = File(AppFolder.getXApkInstallTempFolder(xApkManifest.packageName), it.fileName!!)
+               getZipFileInputStream(zipFile, it.fileName)?.apply {
+                   val tempApk = File(AppFolder.getXApkInstallTempFolder(xApkManifest.packageName), it.fileName)
                    val isApkSuccess = FileWriterUtils.writeFileFromIS(tempApk, this, object : FileWriterUtils.FileWriterProgressCallback {
                        override fun onProgress(currentOffset: Long) {
                            val updateOffset = currentOffset - singFileOffset

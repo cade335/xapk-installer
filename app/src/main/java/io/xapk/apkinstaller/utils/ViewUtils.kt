@@ -78,7 +78,7 @@ object ViewUtils {
                         this.dismiss()
                     }
                 }
-               LaunchUtils.startInstallSplitApksActivity(mContext, apksBean)
+                LaunchUtils.startInstallSplitApksActivity(mContext, apksBean)
             }
 
             override fun onError(installError: XApkInstallUtils.InstallError) {
@@ -87,10 +87,10 @@ object ViewUtils {
                         this.dismiss()
                     }
                 }
-                if (installError == XApkInstallUtils.InstallError.ObbError) {
-                    SimpleToast.defaultShow(mContext, R.string.install_obb_failed)
-                } else {
-                    SimpleToast.defaultShow(mContext, R.string.install_failed)
+                when (installError) {
+                    XApkInstallUtils.InstallError.ObbError -> SimpleToast.defaultShow(mContext, R.string.install_obb_failed)
+                    XApkInstallUtils.InstallError.LowerVersionError -> SimpleToast.defaultShow(mContext, R.string.xapk_file_error)
+                    else -> SimpleToast.defaultShow(mContext, R.string.install_failed)
                 }
             }
         })

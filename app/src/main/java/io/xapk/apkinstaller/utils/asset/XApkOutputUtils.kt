@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
+import io.xapk.apkinstaller.app.Config
 import io.xapk.apkinstaller.model.bean.AppedIconUrl
 import io.xapk.apkinstaller.utils.AppLogger
 import io.xapk.apkinstaller.utils.JsonUtils
@@ -77,6 +78,7 @@ object XApkOutputUtils {
                 }
                 return
             }
+            xSplitApksList.add(XSplitApks(apkFile.name, "base"))
         } else if (appInfo.apksFilePath.isNotEmpty()) {
             handler.post {
                 xApkOutputProgressCallback?.onProgress(XApkOutputStatus.ApkPrePare)
@@ -138,8 +140,17 @@ object XApkOutputUtils {
         handler.post {
             xApkOutputProgressCallback?.onProgress(XApkOutputStatus.OtherPrePare)
         }
+        var splitConfigs1: Array<String?>? = null
+        if (xSplitApksList.isNotEmpty()) {
+            splitConfigs1 = arrayOfNulls(xSplitApksList.size)
+            xSplitApksList.forEachIndexed { index, xSplitApks ->
+                if (xSplitApks._id != "base") {
+                    splitConfigs1[index] = xSplitApks._id
+                }
+            }
+        }
         val xApkManifest = XApkManifest().apply {
-            this.xApkVersion = 2
+            this.xApkVersion = Config.XAPK_VERSION
             this.packageName = appInfo.packageName
             this.label = appInfo.label
             this.versionCode = appInfo.versionCode.toString()
@@ -150,6 +161,9 @@ object XApkOutputUtils {
             this.totalSize = appInfo.appTotalSize
             this.expansionList = xApkExpansionList
             this.XSplitApks = xSplitApksList
+            splitConfigs1?.let {
+                this.splitConfigs = it.filterNotNull().toTypedArray()
+            }
         }
         val jsonFile = File(packageOutPutFileDir, "manifest.json")
         FileWriterUtils.writeStringToFile(jsonFile, JsonUtils.objectToJson(xApkManifest))
