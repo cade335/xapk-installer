@@ -142,10 +142,16 @@ object XApkOutputUtils {
         }
         var splitConfigs1: Array<String?>? = null
         if (xSplitApksList.isNotEmpty()) {
-            splitConfigs1 = arrayOfNulls(xSplitApksList.size)
-            xSplitApksList.forEachIndexed { index, xSplitApks ->
-                if (xSplitApks._id != "base") {
-                    splitConfigs1[index] = xSplitApks._id
+            val splitList = arrayListOf<String>()
+            xSplitApksList.forEach {
+                if (it._id != "base") {
+                    splitList.add(it._id)
+                }
+            }
+            if (splitList.isNotEmpty()) {
+                splitConfigs1 = arrayOfNulls(splitList.size)
+                splitList.forEachIndexed { index, s ->
+                    splitConfigs1[index] = s
                 }
             }
         }
