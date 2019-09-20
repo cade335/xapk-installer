@@ -5,6 +5,7 @@ import android.os.LocaleList
 import android.text.TextUtils
 import io.xapk.apkinstaller.R
 import io.xapk.apkinstaller.app.App
+import io.xapk.apkinstaller.app.Settings
 import java.util.*
 
 object LocaleUtils {
