@@ -97,6 +97,11 @@ class InstallPackageFragment : BaseFragment(), InstallPackageFragContract.StepVi
 
     private fun getLoadInstallPackagedApps() = installPackageFragPresenter.loadLocalInstallPackageApks(mContext)
 
+    override fun scrollToBeginning() {
+        super.scrollToBeginning()
+        installPackageRecyclerView.scrollToPosition(0)
+    }
+
     override fun onDestroyView() {
         installPackageFragPresenter.detachView()
         super.onDestroyView()

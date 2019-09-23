@@ -38,6 +38,7 @@ class MainActivity : IBaseActivity(), Toolbar.OnMenuItemClickListener {
     private lateinit var mPrivacyPolicyMenuItem: MenuItem
     private lateinit var mAboutMenuItem: MenuItem
     private var isWithPermission = false
+    private var vpFragmentArrays: ArrayList<BaseFragment>? = null
 
     override fun getLayout(): Int {
         return R.layout.activity_main
@@ -69,20 +70,21 @@ class MainActivity : IBaseActivity(), Toolbar.OnMenuItemClickListener {
             this.tabGravity = TabLayout.GRAVITY_FILL
             this.tabMode = TabLayout.MODE_FIXED
             this.setupWithViewPager(mainVp)
+            this.addOnTabSelectedListener(onTabSelectedListener)
         }
         mainVp.apply {
             val vpTitleArrays = arrayListOf(
                 mContext.getString(R.string.installed),
                 mContext.getString(R.string.apk_xapk)
             )
-            val vpFragmentArrays = arrayListOf<BaseFragment>(
-                AppInstalledFragment.newInstance(),
-                InstallPackageFragment.newInstance()
+            vpFragmentArrays = arrayListOf(
+                    AppInstalledFragment.newInstance(),
+                    InstallPackageFragment.newInstance()
             )
             val pagerAdapter = ViewPagerTabAdapter(
-                supportFragmentManager,
-                vpFragmentArrays.filterNotNull().toTypedArray(),
-                vpTitleArrays.filterNotNull().toTypedArray()
+                    supportFragmentManager,
+                    vpFragmentArrays!!.filterNotNull().toTypedArray(),
+                    vpTitleArrays.filterNotNull().toTypedArray()
             )
             this.adapter = pagerAdapter
             this.currentItem = 0
@@ -142,6 +144,29 @@ class MainActivity : IBaseActivity(), Toolbar.OnMenuItemClickListener {
 
                 override fun rxOnError(apiException: ApiException) = Unit
             })
+    }
+
+    private val onTabSelectedListener by lazy {
+        object : TabLayout.OnTabSelectedListener {
+            override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
+
+            override fun onTabSelected(tab: TabLayout.Tab?) = Unit
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                tab?.apply {
+                    val position = this.position
+                    vpFragmentArrays?.apply {
+                        if (position < this.size) {
+                            val currentFragment = this[position]
+                            val selectFragment = this[mainVp.currentItem]
+                            if (currentFragment == selectFragment) {
+                                currentFragment.scrollToBeginning()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
