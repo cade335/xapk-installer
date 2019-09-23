@@ -191,7 +191,7 @@ object XApkOutputUtils {
             return
         }
         val endTime = System.currentTimeMillis()
-        AppLogger.d(TAG, "${appInfo.label}总压缩耗时:${endTime - startTime} ")
+        AppLogger.d(TAG, "${appInfo.label} Zip times:${endTime - startTime} ")
         handler.post {
             xApkOutputProgressCallback?.onComped(packageOutPutFileDir, xApkOutputFile)
         }
