@@ -30,6 +30,7 @@ class InstallSplitApksActivity : IBaseActivity() {
         private const val KEY_PARAM = "params_apks"
         private const val PACKAGE_INSTALLED_ACTION = BuildConfig.APPLICATION_ID + ".SESSION_API_PACKAGE_INSTALLED"
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         fun newInstanceIntent(mContext: Context, apksBean: ApksBean): Intent {
             return Intent(mContext, InstallSplitApksActivity::class.java).apply {
                 this.putExtra(KEY_PARAM, apksBean)

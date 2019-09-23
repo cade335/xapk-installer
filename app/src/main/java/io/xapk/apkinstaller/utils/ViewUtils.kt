@@ -2,6 +2,7 @@ package io.xapk.apkinstaller.utils
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.os.Build
 import androidx.annotation.MainThread
 import io.xapk.apkinstaller.R
 import io.xapk.apkinstaller.utils.asset.ApksUtils
@@ -78,7 +79,11 @@ object ViewUtils {
                         this.dismiss()
                     }
                 }
-                LaunchUtils.startInstallSplitApksActivity(mContext, apksBean)
+                when {
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP -> LaunchUtils.startInstallSplitApksActivity(mContext, apksBean)
+                    apksBean.splitApkPaths?.size == 1 -> IntentUtils.installedApk(mContext, apksBean.splitApkPaths!![0])
+                    else -> onError(XApkInstallUtils.InstallError.LowerSdkError)
+                }
             }
 
             override fun onError(installError: XApkInstallUtils.InstallError) {
@@ -90,6 +95,7 @@ object ViewUtils {
                 when (installError) {
                     XApkInstallUtils.InstallError.ObbError -> SimpleToast.defaultShow(mContext, R.string.install_obb_failed)
                     XApkInstallUtils.InstallError.LowerVersionError -> SimpleToast.defaultShow(mContext, R.string.xapk_lower_version_error)
+                    XApkInstallUtils.InstallError.LowerSdkError -> SimpleToast.defaultShow(mContext, R.string.xapk_sdk_lower_version_error)
                     else -> SimpleToast.defaultShow(mContext, R.string.install_failed)
                 }
             }
@@ -141,12 +147,16 @@ object ViewUtils {
                             this.add(it.absolutePath)
                         }
                     }
-                    LaunchUtils.startInstallSplitApksActivity(mContext, ApksBean().apply {
-                        this.label = apkInfo.label
-                        this.packageName = apkInfo.packageName
-                        this.splitApkPaths = splitApkPaths
-                        this.outputFileDir = outputDir.absolutePath
-                    })
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        LaunchUtils.startInstallSplitApksActivity(mContext, ApksBean().apply {
+                            this.label = apkInfo.label
+                            this.packageName = apkInfo.packageName
+                            this.splitApkPaths = splitApkPaths
+                            this.outputFileDir = outputDir.absolutePath
+                        })
+                    }else{
+                        this.onError(outputDir)
+                    }
                 } else {
                     this.onError(outputDir)
                 }

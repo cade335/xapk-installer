@@ -1,5 +1,6 @@
 package io.xapk.apkinstaller.utils.asset
 
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.MainThread
@@ -25,6 +26,7 @@ object XApkInstallUtils {
         ObbError,
         ApkError,
         LowerVersionError,
+        LowerSdkError,
     }
 
     interface XApkInstallProgressCallback {
@@ -120,6 +122,12 @@ object XApkInstallUtils {
                         if (this.xApkVersion < Config.XAPK_VERSION) {
                             handler.post {
                                 xApkInstallProgressCallback?.onError(InstallError.LowerVersionError)
+                            }
+                            return@Runnable
+                        }
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && this.XSplitApks?.size ?: 0 > 1) {
+                            handler.post {
+                                xApkInstallProgressCallback?.onError(InstallError.LowerSdkError)
                             }
                             return@Runnable
                         }
