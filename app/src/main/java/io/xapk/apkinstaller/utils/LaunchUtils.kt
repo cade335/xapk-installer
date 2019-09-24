@@ -1,6 +1,8 @@
 package io.xapk.apkinstaller.utils
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import io.xapk.apkinstaller.R
 import io.xapk.apkinstaller.utils.bean.xapk.ApksBean
 import io.xapk.apkinstaller.utils.bean.apk.AppInfo
@@ -28,6 +30,7 @@ object LaunchUtils {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     fun startInstallSplitApksActivity(mContext: Context, apksBean: ApksBean) {
         mContext.startActivity(InstallSplitApksActivity.newInstanceIntent(mContext, apksBean))
     }
