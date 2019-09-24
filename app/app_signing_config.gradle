@@ -23,14 +23,14 @@ android {
         debug {
             debuggable true
             versionNameSuffix "-debug"
-            applicationIdSuffix ".debug"
+            //applicationIdSuffix ".debug"
             buildConfigField "boolean", "IS_BETA", "false"
             buildConfigField "boolean", "IS_RELEASE", "false"
         }
 
         beta {
             versionNameSuffix "-beta"
-            applicationIdSuffix ".beta"
+            //applicationIdSuffix ".beta"
             minifyEnabled true
             zipAlignEnabled true
             shrinkResources true

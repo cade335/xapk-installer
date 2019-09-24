@@ -21,6 +21,7 @@ import io.xapk.apkinstaller.utils.bean.ApksInfo
 import io.xapk.apkinstaller.utils.bean.apk.ApkInfo
 import io.xapk.apkinstaller.utils.bean.xapk.XApkIconUrl
 import io.xapk.apkinstaller.utils.bean.xapk.XApkInfo
+import io.xapk.apkinstaller.utils.firebase.FirebaseEventUtils
 import io.xapk.apkinstaller.utils.io.FsUtils
 import io.xapk.apkinstaller.utils.toast.SimpleToast
 import io.xapk.apkinstaller.utils.unit.FormatUtils
@@ -87,6 +88,7 @@ class InstallPackageAdapter (data: List<ApkAssetBean>?): BaseQuickAdapter<ApkAss
             versionInfoTv.text = apkInfo.versionName
             installedBt.setOnClickListener {
                 IntentUtils.installedApk(mContext, apkInfo.path)
+                FirebaseEventUtils.clickInstallXApkOrApk(apkAssetBean)
             }
             optionRl.setOnClickListener {
                 showOptionPopupWindow(it, apkInfo, apkAssetBean)
@@ -111,6 +113,7 @@ class InstallPackageAdapter (data: List<ApkAssetBean>?): BaseQuickAdapter<ApkAss
             versionInfoTv.text = xapkInfo.versionName
             installedBt.setOnClickListener {
                 ViewUtils.installXApk(mContext, xapkInfo)
+                FirebaseEventUtils.clickInstallXApkOrApk(apkAssetBean)
             }
             optionRl.setOnClickListener {
                 showOptionPopupWindow(it, xapkInfo, apkAssetBean)
@@ -134,8 +137,8 @@ class InstallPackageAdapter (data: List<ApkAssetBean>?): BaseQuickAdapter<ApkAss
             sizeTv.text = FormatUtils.formatFileLength(apksInfo.fileSize)
             versionInfoTv.visibility = View.GONE
             installedBt.setOnClickListener {
-                //ViewUtils.installXApk(mContext, xapkInfo)
                 ViewUtils.installApks(mContext, apksInfo)
+                FirebaseEventUtils.clickInstallXApkOrApk(apkAssetBean)
             }
             optionRl.setOnClickListener {
                 showOptionPopupWindow(it, apksInfo, apkAssetBean)
