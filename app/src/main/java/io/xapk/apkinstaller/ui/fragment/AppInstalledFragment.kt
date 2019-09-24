@@ -105,6 +105,7 @@ class AppInstalledFragment : BaseFragment(), AppInstalledFragContract.StepView {
             for (item in appInstalledAdapter.data.indices) {
                 if (appInstalledAdapter.data[item].packageName == packageName) {
                     appInfoIndex = item
+                    break
                 }
             }
             if (appInfoIndex != -1) {
