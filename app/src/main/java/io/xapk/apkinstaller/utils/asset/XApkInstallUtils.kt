@@ -135,7 +135,7 @@ object XApkInstallUtils {
                             installXApkObb(zipFile!!, this, xApkInstallProgressCallback)
                         }
                         if (this.useSplitApks()) {
-                            installSplitApks(zipFile!!, this, xApkInstallProgressCallback)
+                            installSplitApks(xApkFile, zipFile!!, this, xApkInstallProgressCallback)
                         } else {
                             installApk(zipFile!!, this, xApkInstallProgressCallback)
                         }
@@ -217,7 +217,7 @@ object XApkInstallUtils {
         }
     }
 
-    private fun installSplitApks(zipFile: ZipFile, xApkManifest: XApkManifest,
+    private fun installSplitApks(xApkFile: File, zipFile: ZipFile, xApkManifest: XApkManifest,
                                  xApkInstallProgressCallback: XApkInstallProgressCallback?){
         val fileList= arrayListOf<String>()
         if (xApkManifest.useSplitApks()){
@@ -254,6 +254,7 @@ object XApkInstallUtils {
                         this.packageName = xApkManifest.packageName
                         this.splitApkPaths = fileList
                         this.outputFileDir = AppFolder.getXApkInstallTempFolder(packageName).absolutePath
+                        this.xApkIconFilePath = xApkFile.absolutePath
                     })
                 }
             } else {

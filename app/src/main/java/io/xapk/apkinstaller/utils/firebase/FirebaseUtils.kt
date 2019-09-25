@@ -12,7 +12,7 @@ import io.xapk.apkinstaller.utils.unit.FormatUtils
  * @author xiongke
  * @date 2019-09-24
  */
-object FirebaseEventUtils {
+object FirebaseUtils {
     private val firebaseAnalytics by lazy { FirebaseAnalytics.getInstance(App.mContext) }
 
     private fun logEvent(category: String, params: Bundle) {
@@ -24,30 +24,32 @@ object FirebaseEventUtils {
     }
 
     fun clickInstallXApkOrApk(apkAssetBean: ApkAssetBean) {
-        val category = "install"
+        var category: String? = null
         val bundle = Bundle()
         val apkInfo = apkAssetBean.apkInfo
         val apksInfo = apkAssetBean.apksInfo
         val xApkInfo = apkAssetBean.xApkInfo
         if (apkAssetBean.apkAssetType == ApkAssetType.Apk && apkInfo != null) {
+            category = "installAPK"
             bundle.putString("label", apkInfo.label)
             bundle.putString("packageName", apkInfo.packageName)
             bundle.putInt("versionCode", apkInfo.versionCode)
             bundle.putString("versionName", apkInfo.versionName)
             bundle.putString("appSize", FormatUtils.formatFileLength(apkInfo.appSize))
-            bundle.putString("type", "APK")
         } else if (apkAssetBean.apkAssetType == ApkAssetType.XAPK && xApkInfo != null) {
+            category = "installXAPK"
             bundle.putString("label", xApkInfo.label)
             bundle.putString("packageName", xApkInfo.packageName)
             bundle.putInt("versionCode", xApkInfo.versionCode)
             bundle.putString("versionName", xApkInfo.versionName)
             bundle.putString("appSize", FormatUtils.formatFileLength(xApkInfo.appSize))
-            bundle.putString("type", "XAPK")
         } else if (apkAssetBean.apkAssetType == ApkAssetType.Apks && apksInfo != null) {
+            category = "installAPKS"
             bundle.putString("fileName", apksInfo.fileName)
-            bundle.putString("type", "APKS")
         }
-        logEvent(category, bundle)
+        category?.let {
+            logEvent(it, bundle)
+        }
     }
 
     fun clickUnInstallApk(appInfo: AppInfo) {
@@ -86,5 +88,10 @@ object FirebaseEventUtils {
             this.putString("obbExists", appInfo.obbExists.toString())
         }
         logEvent(category, bundle)
+    }
+
+    fun clickShare() {
+        val category = "share"
+        logEvent(category, Bundle())
     }
 }

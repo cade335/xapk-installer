@@ -20,7 +20,7 @@ import io.xapk.apkinstaller.utils.IntentUtils
 import io.xapk.apkinstaller.utils.LaunchUtils
 import io.xapk.apkinstaller.utils.StringUtils
 import io.xapk.apkinstaller.utils.bean.apk.AppInfo
-import io.xapk.apkinstaller.utils.firebase.FirebaseEventUtils
+import io.xapk.apkinstaller.utils.firebase.FirebaseUtils
 import io.xapk.apkinstaller.utils.toast.SimpleToast
 import io.xapk.apkinstaller.utils.unit.FormatUtils
 import io.xapk.apkinstaller.utils.unit.JodaTimeUtils
@@ -60,7 +60,7 @@ class AppInstalledAdapter(val mActivity: Activity, data: List<AppInfo>?) : BaseQ
             }
             unInstalledBt.setOnClickListener {
                 IntentUtils.unInstalledApp(mActivity, dateItem.packageName)
-                FirebaseEventUtils.clickUnInstallApk(dateItem)
+                FirebaseUtils.clickUnInstallApk(dateItem)
             }
             optionRl.setOnClickListener {
                 showOptionPopupWindow(it, dateItem)
@@ -85,11 +85,11 @@ class AppInstalledAdapter(val mActivity: Activity, data: List<AppInfo>?) : BaseQ
                     2 -> IntentUtils.openAppSetting(mContext, appInfo.packageName)
                     3 -> {
                         LaunchUtils.startApkExportService(mContext, appInfo)
-                        FirebaseEventUtils.clickExportApk(appInfo)
+                        FirebaseUtils.clickExportApk(appInfo)
                     }
                     4 -> {
                         LaunchUtils.startXApkOutputZipService(mContext, appInfo)
-                        FirebaseEventUtils.clickExportXApk(appInfo)
+                        FirebaseUtils.clickExportXApk(appInfo)
                     }
                     else -> {
                     }

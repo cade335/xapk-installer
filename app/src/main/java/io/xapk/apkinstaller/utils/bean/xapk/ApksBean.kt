@@ -5,10 +5,12 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ApksBean(
-    var packageName: String,
-    var label: String,
-    var outputFileDir: String,
-    var splitApkPaths: ArrayList<String>?
+        var packageName: String,
+        var label: String,
+        var xApkIconFilePath: String,
+        var apksIconFilePath: String,
+        var outputFileDir: String,
+        var splitApkPaths: ArrayList<String>?
 ) : Parcelable {
-    constructor() : this(String(), String(), String(), null)
+    constructor() : this(String(), String(), String(), String(), String(), null)
 }

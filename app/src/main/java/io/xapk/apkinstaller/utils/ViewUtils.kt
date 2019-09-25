@@ -153,8 +153,9 @@ object ViewUtils {
                             this.packageName = apkInfo.packageName
                             this.splitApkPaths = splitApkPaths
                             this.outputFileDir = outputDir.absolutePath
+                            this.apksIconFilePath = apkInfo.path
                         })
-                    }else{
+                    } else {
                         this.onError(outputDir)
                     }
                 } else {
