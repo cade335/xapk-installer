@@ -85,7 +85,10 @@ class InstallPackageAdapter (data: List<ApkAssetBean>?): BaseQuickAdapter<ApkAss
                 this.requestLayout()
             }
             sizeTv.text = FormatUtils.formatFileLength(apkInfo.appSize)
-            versionInfoTv.text = apkInfo.versionName
+            versionInfoTv.apply {
+                this.text = apkInfo.versionName
+                this.visibility = View.VISIBLE
+            }
             installedBt.setOnClickListener {
                 IntentUtils.installedApk(mContext, apkInfo.path)
                 FirebaseUtils.clickInstallXApkOrApk(apkAssetBean)
@@ -110,7 +113,10 @@ class InstallPackageAdapter (data: List<ApkAssetBean>?): BaseQuickAdapter<ApkAss
                 this.requestLayout()
             }
             sizeTv.text = FormatUtils.formatFileLength(xapkInfo.appSize)
-            versionInfoTv.text = xapkInfo.versionName
+            versionInfoTv.apply {
+                this.text = xapkInfo.versionName
+                this.visibility = View.VISIBLE
+            }
             installedBt.setOnClickListener {
                 ViewUtils.installXApk(mContext, xapkInfo)
                 FirebaseUtils.clickInstallXApkOrApk(apkAssetBean)
