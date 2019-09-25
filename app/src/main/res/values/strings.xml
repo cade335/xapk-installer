@@ -42,7 +42,7 @@
     <string name="install_obb_failed">OBB文件安装失败!</string>
     <string name="xapk_file_error">XAPK 安装包缺失!</string>
     <string name="xapk_lower_version_error">XAPK 安装包版本太低!</string>
-    <string name="xapk_sdk_lower_version_error">5.0以下系统无法安装XAPK!</string>
+    <string name="part_xapk_sdk_lower_version_error">5.0以下系统部分XAPK包无法安装!</string>
     <string name="share_text">XApk shareText</string>
     <string name="menu_app_info_hit">
         <![CDATA[版本:<xliff:g example="2.12.0" id="version">%1$s</xliff:g><br/>

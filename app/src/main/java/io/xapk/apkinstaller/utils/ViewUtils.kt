@@ -96,7 +96,7 @@ object ViewUtils {
                 when (installError) {
                     XApkInstallUtils.InstallError.ObbError -> SimpleToast.defaultShow(mContext, R.string.install_obb_failed)
                     XApkInstallUtils.InstallError.LowerVersionError -> SimpleToast.defaultShow(mContext, R.string.xapk_lower_version_error)
-                    XApkInstallUtils.InstallError.LowerSdkError -> SimpleToast.defaultShow(mContext, R.string.xapk_sdk_lower_version_error)
+                    XApkInstallUtils.InstallError.LowerSdkError -> SimpleToast.defaultShow(mContext, R.string.part_xapk_sdk_lower_version_error)
                     else -> SimpleToast.defaultShow(mContext, R.string.install_failed)
                 }
             }
