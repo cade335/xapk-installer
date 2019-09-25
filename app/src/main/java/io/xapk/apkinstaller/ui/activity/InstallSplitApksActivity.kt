@@ -19,6 +19,7 @@ import io.xapk.apkinstaller.R
 import io.xapk.apkinstaller.model.bean.ApkIconUrl
 import io.xapk.apkinstaller.model.glide.ImageLoader
 import io.xapk.apkinstaller.ui.base.IBaseActivity
+import io.xapk.apkinstaller.utils.bean.ApkAssetType
 import io.xapk.apkinstaller.utils.bean.xapk.ApksBean
 import io.xapk.apkinstaller.utils.bean.xapk.XApkIconUrl
 import io.xapk.apkinstaller.utils.io.FsUtils
@@ -60,16 +61,19 @@ class InstallSplitApksActivity : IBaseActivity() {
         val iconRiv: RoundedImageView = findViewById(R.id.icon_riv)
         val titleTv: TextView = findViewById(R.id.title_tv)
         titleTv.text = apksBean!!.label
-        if (!TextUtils.isEmpty(apksBean!!.xApkIconFilePath)) {
+        val apkAssetType = apksBean!!.apkAssetType
+        val iconUrl = apksBean!!.iconPath
+        if (!TextUtils.isEmpty(iconUrl) && apkAssetType != null) {
             iconRiv.visibility = View.VISIBLE
-            ImageLoader.Builder(mContext, XApkIconUrl(apksBean!!.xApkIconFilePath))
-                    .setRequestOptions(ImageLoader.defaultRequestOptions(R.color.placeholder_color))
-                    .build(iconRiv)
-        } else if (!TextUtils.isEmpty(apksBean!!.apksIconFilePath)) {
-            iconRiv.visibility = View.VISIBLE
-            ImageLoader.Builder(mContext, ApkIconUrl(apksBean!!.apksIconFilePath, -1))
-                    .setRequestOptions(ImageLoader.defaultRequestOptions(R.color.placeholder_color))
-                    .build(iconRiv)
+            if (apkAssetType == ApkAssetType.XAPK) {
+                ImageLoader.Builder(mContext, XApkIconUrl(iconUrl))
+                        .setRequestOptions(ImageLoader.defaultRequestOptions(R.color.placeholder_color))
+                        .build(iconRiv)
+            } else if (apkAssetType == ApkAssetType.Apks) {
+                ImageLoader.Builder(mContext, ApkIconUrl(iconUrl, -1))
+                        .setRequestOptions(ImageLoader.defaultRequestOptions(R.color.placeholder_color))
+                        .build(iconRiv)
+            }
         } else {
             iconRiv.visibility = View.GONE
         }

@@ -8,6 +8,7 @@ import io.xapk.apkinstaller.R
 import io.xapk.apkinstaller.utils.asset.ApksUtils
 import io.xapk.apkinstaller.utils.asset.XApkInstallUtils
 import io.xapk.apkinstaller.utils.bean.ApkAssetBean
+import io.xapk.apkinstaller.utils.bean.ApkAssetType
 import io.xapk.apkinstaller.utils.bean.ApksInfo
 import io.xapk.apkinstaller.utils.bean.xapk.ApksBean
 import io.xapk.apkinstaller.utils.bean.xapk.XApkInfo
@@ -153,7 +154,8 @@ object ViewUtils {
                             this.packageName = apkInfo.packageName
                             this.splitApkPaths = splitApkPaths
                             this.outputFileDir = outputDir.absolutePath
-                            this.apksIconFilePath = apkInfo.path
+                            this.iconPath = apkInfo.path
+                            this.apkAssetType = ApkAssetType.Apks
                         })
                     } else {
                         this.onError(outputDir)

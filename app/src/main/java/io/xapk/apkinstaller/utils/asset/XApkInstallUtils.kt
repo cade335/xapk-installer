@@ -7,6 +7,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import io.xapk.apkinstaller.app.Config
 import io.xapk.apkinstaller.utils.JsonUtils
+import io.xapk.apkinstaller.utils.bean.ApkAssetType
 import io.xapk.apkinstaller.utils.bean.xapk.ApksBean
 import io.xapk.apkinstaller.utils.bean.xapk.XApkManifest
 import io.xapk.apkinstaller.utils.io.AppFolder
@@ -254,7 +255,8 @@ object XApkInstallUtils {
                         this.packageName = xApkManifest.packageName
                         this.splitApkPaths = fileList
                         this.outputFileDir = AppFolder.getXApkInstallTempFolder(packageName).absolutePath
-                        this.xApkIconFilePath = xApkFile.absolutePath
+                        this.iconPath = xApkFile.absolutePath
+                        this.apkAssetType = ApkAssetType.XAPK
                     })
                 }
             } else {
