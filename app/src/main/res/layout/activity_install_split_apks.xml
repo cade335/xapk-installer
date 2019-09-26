@@ -34,7 +34,6 @@
                     android:layout_marginEnd="@dimen/size_16"
                     android:layout_marginRight="@dimen/size_16"
                     android:scaleType="centerCrop"
-                    app:riv_corner_radius="@dimen/size_38"
                     tools:src="@mipmap/ic_launcher" />
 
                 <TextView
