@@ -10,7 +10,6 @@ import androidx.appcompat.widget.PopupMenu
 import com.afollestad.materialdialogs.MaterialDialog
 import com.chad.library.adapter.base.BaseQuickAdapter
 import io.xapk.apkinstaller.R
-import io.xapk.apkinstaller.utils.bean.apk.AppInfo
 import io.xapk.apkinstaller.model.bean.AppedIconUrl
 import io.xapk.apkinstaller.model.glide.ImageLoader
 import io.xapk.apkinstaller.ui.base.IBaseViewMultiHolder
@@ -20,6 +19,8 @@ import io.xapk.apkinstaller.utils.ClipboardUtil
 import io.xapk.apkinstaller.utils.IntentUtils
 import io.xapk.apkinstaller.utils.LaunchUtils
 import io.xapk.apkinstaller.utils.StringUtils
+import io.xapk.apkinstaller.utils.bean.apk.AppInfo
+import io.xapk.apkinstaller.utils.firebase.FirebaseUtils
 import io.xapk.apkinstaller.utils.toast.SimpleToast
 import io.xapk.apkinstaller.utils.unit.FormatUtils
 import io.xapk.apkinstaller.utils.unit.JodaTimeUtils
@@ -42,8 +43,8 @@ class AppInstalledAdapter(val mActivity: Activity, data: List<AppInfo>?) : BaseQ
         override fun updateView(dateItem: AppInfo) {
             super.updateView(dateItem)
             ImageLoader.Builder(mContext, AppedIconUrl(dateItem.packageName, dateItem.versionCode))
-                .setRequestOptions(ImageLoader.defaultRequestOptions(R.color.placeholder_color))
-                .build(iconIv)
+                    .setRequestOptions(ImageLoader.defaultRequestOptions(R.color.placeholder_color))
+                    .build(iconIv)
             nameTv.apply {
                 this.text = dateItem.label
                 this.requestLayout()
@@ -59,6 +60,7 @@ class AppInstalledAdapter(val mActivity: Activity, data: List<AppInfo>?) : BaseQ
             }
             unInstalledBt.setOnClickListener {
                 IntentUtils.unInstalledApp(mActivity, dateItem.packageName)
+                FirebaseUtils.clickUnInstallApk(dateItem)
             }
             optionRl.setOnClickListener {
                 showOptionPopupWindow(it, dateItem)
@@ -70,9 +72,9 @@ class AppInstalledAdapter(val mActivity: Activity, data: List<AppInfo>?) : BaseQ
         PopupMenu(mContext, authorView).apply {
             this.menu.apply {
                 mContext.resources.getStringArray(R.array.installed_app_options)
-                    .forEachIndexed { index, s ->
-                        this.add(0, index, index, s)
-                    }
+                        .forEachIndexed { index, s ->
+                            this.add(0, index, index, s)
+                        }
             }
             this.menu.findItem(3)?.isVisible = appInfo.isUpdateFile
             this.menu.findItem(4)?.isVisible = appInfo.isExpandXApk
@@ -81,8 +83,14 @@ class AppInstalledAdapter(val mActivity: Activity, data: List<AppInfo>?) : BaseQ
                     0 -> IntentUtils.openApp(mContext, appInfo.packageName)
                     1 -> aboutAppInfo(appInfo)
                     2 -> IntentUtils.openAppSetting(mContext, appInfo.packageName)
-                    3 -> LaunchUtils.startApkExportService(mContext, appInfo)
-                    4 -> LaunchUtils.startXApkOutputZipService(mContext, appInfo)
+                    3 -> {
+                        LaunchUtils.startApkExportService(mContext, appInfo)
+                        FirebaseUtils.clickExportApk(appInfo)
+                    }
+                    4 -> {
+                        LaunchUtils.startXApkOutputZipService(mContext, appInfo)
+                        FirebaseUtils.clickExportXApk(appInfo)
+                    }
                     else -> {
                     }
                 }
@@ -95,11 +103,11 @@ class AppInstalledAdapter(val mActivity: Activity, data: List<AppInfo>?) : BaseQ
     private fun aboutAppInfo(appInfo: AppInfo) {
         MaterialDialog(mContext).show {
             val copyInfo = StringUtils.fromHtml(context.getString(R.string.menu_app_info_hit
-                , "${appInfo.versionName}(${appInfo.versionCode})"
-                , appInfo.packageName
-                , appInfo.sourceDir
-                , FormatUtils.formatFileLength(appInfo.appTotalSize)
-                , JodaTimeUtils.formatDataToShortDateInfo(JodaTimeUtils.longToDate(appInfo.lastUpdateTime))))
+                    , "${appInfo.versionName}(${appInfo.versionCode})"
+                    , appInfo.packageName
+                    , appInfo.sourceDir
+                    , FormatUtils.formatFileLength(appInfo.appTotalSize)
+                    , JodaTimeUtils.formatDataToShortDateInfo(JodaTimeUtils.longToDate(appInfo.lastUpdateTime))))
             this.title(null, appInfo.label)
             this@show.message(null, copyInfo)
             this.negativeButton(android.R.string.copy) {

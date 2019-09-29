@@ -21,6 +21,7 @@ import io.xapk.apkinstaller.ui.fragment.AppInstalledFragment
 import io.xapk.apkinstaller.ui.fragment.InstallPackageFragment
 import io.xapk.apkinstaller.utils.IntentUtils
 import io.xapk.apkinstaller.utils.LaunchUtils
+import io.xapk.apkinstaller.utils.firebase.FirebaseUtils
 import io.xapk.apkinstaller.utils.rx.RxPermissionsUtils
 import io.xapk.apkinstaller.utils.rx.RxSubscriber
 import io.xapk.apkinstaller.utils.toast.Duration
@@ -103,6 +104,7 @@ class MainActivity : IBaseActivity(), Toolbar.OnMenuItemClickListener {
         when (item) {
             mShareMenuItem -> {
                 IntentUtils.shareText(mActivity, mContext.getString(R.string.share_text))
+                FirebaseUtils.clickShare()
             }
             mPrivacyPolicyMenuItem -> {
                 LaunchUtils.startPrivacyPolicyActivity(mContext)

@@ -8,14 +8,20 @@ import android.content.pm.PackageInstaller
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.Toolbar
+import com.makeramen.roundedimageview.RoundedImageView
 import io.xapk.apkinstaller.BuildConfig
 import io.xapk.apkinstaller.R
+import io.xapk.apkinstaller.model.bean.ApkIconUrl
+import io.xapk.apkinstaller.model.glide.ImageLoader
 import io.xapk.apkinstaller.ui.base.IBaseActivity
+import io.xapk.apkinstaller.utils.bean.ApkAssetType
 import io.xapk.apkinstaller.utils.bean.xapk.ApksBean
+import io.xapk.apkinstaller.utils.bean.xapk.XApkIconUrl
 import io.xapk.apkinstaller.utils.io.FsUtils
 import io.xapk.apkinstaller.utils.toast.SimpleToast
 import java.io.File
@@ -44,16 +50,33 @@ class InstallSplitApksActivity : IBaseActivity() {
 
     override fun nextStep() {
         super.nextStep()
-        apksBean=intent.getParcelableExtra(KEY_PARAM)
+        apksBean = intent.getParcelableExtra(KEY_PARAM)
         if (apksBean == null
-            || apksBean!!.splitApkPaths.isNullOrEmpty()
-            ||apksBean!!.packageName.isEmpty()) {
-            SimpleToast.defaultShow(mContext,R.string.install_failed)
+                || apksBean!!.splitApkPaths.isNullOrEmpty()
+                || apksBean!!.packageName.isEmpty()) {
+            SimpleToast.defaultShow(mContext, R.string.install_failed)
             finish()
             return
         }
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.title = apksBean!!.label
+        val iconRiv: RoundedImageView = findViewById(R.id.icon_riv)
+        val titleTv: TextView = findViewById(R.id.title_tv)
+        titleTv.text = apksBean!!.label
+        val apkAssetType = apksBean!!.apkAssetType
+        val iconUrl = apksBean!!.iconPath
+        if (!TextUtils.isEmpty(iconUrl) && apkAssetType != null) {
+            iconRiv.visibility = View.VISIBLE
+            if (apkAssetType == ApkAssetType.XAPK) {
+                ImageLoader.Builder(mContext, XApkIconUrl(iconUrl))
+                        .setRequestOptions(ImageLoader.defaultRequestOptions(R.color.placeholder_color))
+                        .build(iconRiv)
+            } else if (apkAssetType == ApkAssetType.Apks) {
+                ImageLoader.Builder(mContext, ApkIconUrl(iconUrl, -1))
+                        .setRequestOptions(ImageLoader.defaultRequestOptions(R.color.placeholder_color))
+                        .build(iconRiv)
+            }
+        } else {
+            iconRiv.visibility = View.GONE
+        }
         Handler(Looper.getMainLooper()).postDelayed({ this.install() }, 500)
     }
 

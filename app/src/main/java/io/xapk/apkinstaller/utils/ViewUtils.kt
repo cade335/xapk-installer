@@ -8,6 +8,7 @@ import io.xapk.apkinstaller.R
 import io.xapk.apkinstaller.utils.asset.ApksUtils
 import io.xapk.apkinstaller.utils.asset.XApkInstallUtils
 import io.xapk.apkinstaller.utils.bean.ApkAssetBean
+import io.xapk.apkinstaller.utils.bean.ApkAssetType
 import io.xapk.apkinstaller.utils.bean.ApksInfo
 import io.xapk.apkinstaller.utils.bean.xapk.ApksBean
 import io.xapk.apkinstaller.utils.bean.xapk.XApkInfo
@@ -95,7 +96,7 @@ object ViewUtils {
                 when (installError) {
                     XApkInstallUtils.InstallError.ObbError -> SimpleToast.defaultShow(mContext, R.string.install_obb_failed)
                     XApkInstallUtils.InstallError.LowerVersionError -> SimpleToast.defaultShow(mContext, R.string.xapk_lower_version_error)
-                    XApkInstallUtils.InstallError.LowerSdkError -> SimpleToast.defaultShow(mContext, R.string.xapk_sdk_lower_version_error)
+                    XApkInstallUtils.InstallError.LowerSdkError -> SimpleToast.defaultShow(mContext, R.string.part_xapk_sdk_lower_version_error)
                     else -> SimpleToast.defaultShow(mContext, R.string.install_failed)
                 }
             }
@@ -153,8 +154,10 @@ object ViewUtils {
                             this.packageName = apkInfo.packageName
                             this.splitApkPaths = splitApkPaths
                             this.outputFileDir = outputDir.absolutePath
+                            this.iconPath = apkInfo.path
+                            this.apkAssetType = ApkAssetType.Apks
                         })
-                    }else{
+                    } else {
                         this.onError(outputDir)
                     }
                 } else {

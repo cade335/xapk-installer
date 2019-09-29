@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "419402424810",
+    "firebase_url": "https://xapk-installer.firebaseio.com",
+    "project_id": "xapk-installer",
+    "storage_bucket": "xapk-installer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:419402424810:android:f2b0b4228a9a784dd59293",
+        "android_client_info": {
+          "package_name": "io.xapk.apkinstaller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "419402424810-gv2d85atjp46n3spbisf959irkir9sl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHu7m3nS1P9EIgS4RAzTAcWMjYaecMPGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "419402424810-gv2d85atjp46n3spbisf959irkir9sl9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
