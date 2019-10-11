@@ -17,7 +17,7 @@ class InstallPackageFragPresenter : IBasePresenter<InstallPackageFragContract.St
     override fun loadLocalInstallPackageApks(mContext: Context) {
         mRootView?.let {
             Observable.create(ObservableOnSubscribe<List<ApkAssetBean>> { emitter ->
-                AssetUtils.getStorageDirApk(mContext)
+                AssetUtils.getStorageDirMultipleApk(mContext)
                     .sortedByDescending { it2 -> it2.sortPosition }
                     .toList()
                     .apply {

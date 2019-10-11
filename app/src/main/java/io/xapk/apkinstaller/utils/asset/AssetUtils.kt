@@ -10,15 +10,15 @@ import io.xapk.apkinstaller.utils.bean.ApkAssetType
 import io.xapk.apkinstaller.utils.bean.apk.ApkInfo
 import io.xapk.apkinstaller.utils.bean.xapk.XApkInfo
 import io.xapk.apkinstaller.utils.io.FsUtils
-import io.xapk.apkinstaller.utils.io.filefilter.ApkXpkFileFilter
+import io.xapk.apkinstaller.utils.io.filefilter.ApkXpkApksFileFilter
 import java.io.File
 
 object AssetUtils {
     @WorkerThread
-    fun getStorageDirApk(mContext: Context): List<ApkAssetBean> {
+    fun getStorageDirMultipleApk(mContext: Context): List<ApkAssetBean> {
         val unAppFileInfoList = arrayListOf<ApkAssetBean>()
         FsUtils.getStorageDir()?.apply {
-            FsUtils.getDirFilesArray(this, ApkXpkFileFilter()).forEach {
+            FsUtils.getDirFilesArray(this, ApkXpkApksFileFilter()).forEach {
                 if (it.name.endsWith(ApkAssetType.Apk.suffix, true)) {
                     getSingleApkAssetInfo(mContext, it)?.apply {
                         unAppFileInfoList.add(this)
