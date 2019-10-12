@@ -60,4 +60,5 @@
     <string name="development_code">开发源码许可</string>
     <string name="about">关于</string>
     <string name="refresh_page">刷新网页</string>
+    <string name="apks_file_error">APKS 安装包缺失!</string>
 </resources>

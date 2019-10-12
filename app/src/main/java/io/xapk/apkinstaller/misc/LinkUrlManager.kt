@@ -110,7 +110,7 @@ object LinkUrlManager {
                 }
 
                 override fun rxOnError(apiException: ApiException) {
-                    SimpleToast.defaultShow(mContext, R.string.xapk_file_error)
+                    SimpleToast.defaultShow(mContext, R.string.apks_file_error)
                 }
             })
     }
