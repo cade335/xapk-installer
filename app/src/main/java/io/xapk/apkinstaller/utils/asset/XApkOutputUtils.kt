@@ -65,21 +65,7 @@ object XApkOutputUtils {
             return
         }
         val xSplitApksList = arrayListOf<XSplitApks>()
-        if (appInfo.isUpdateFile && appInfo.obbExists) {
-            handler.post {
-                xApkOutputProgressCallback?.onProgress(XApkOutputStatus.ApkPrePare)
-            }
-            val apkFile = File(appInfo.sourceDir)
-            val outputApkFile = File(packageOutPutFileDir, "${appInfo.packageName}.apk")
-            FsUtils.writeFileToFile(outputApkFile, apkFile)
-            if (!FsUtils.exists(outputApkFile) || FsUtils.getFileOrDirLength(outputApkFile) == 0L) {
-                handler.post {
-                    xApkOutputProgressCallback?.onError(packageOutPutFileDir)
-                }
-                return
-            }
-            xSplitApksList.add(XSplitApks(apkFile.name, "base"))
-        } else if (appInfo.apksFilePath.isNotEmpty()) {
+        if (appInfo.apksFilePath.isNotEmpty()) {
             handler.post {
                 xApkOutputProgressCallback?.onProgress(XApkOutputStatus.ApkPrePare)
             }
@@ -102,6 +88,20 @@ object XApkOutputUtils {
                     }
                 }
             }
+        } else if (appInfo.sourceDir.isNotEmpty()) {
+            handler.post {
+                xApkOutputProgressCallback?.onProgress(XApkOutputStatus.ApkPrePare)
+            }
+            val apkFile = File(appInfo.sourceDir)
+            val outputApkFile = File(packageOutPutFileDir, "base.apk")
+            FsUtils.writeFileToFile(outputApkFile, apkFile)
+            if (!FsUtils.exists(outputApkFile) || FsUtils.getFileOrDirLength(outputApkFile) == 0L) {
+                handler.post {
+                    xApkOutputProgressCallback?.onError(packageOutPutFileDir)
+                }
+                return
+            }
+            xSplitApksList.add(XSplitApks(outputApkFile.name, "base"))
         }
         val xApkExpansionList = arrayListOf<XApkExpansion>()
         if (appInfo.obbExists){
